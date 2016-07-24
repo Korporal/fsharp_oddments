@@ -16,4 +16,6 @@ let main argv =
 
     let filtered input = Seq.unfold get_next_character (false, input) |> System.String.Concat
 
+    let result = filtered "This text is HTML with an embedded <img> image tag."
+
     0 // return an integer exit code

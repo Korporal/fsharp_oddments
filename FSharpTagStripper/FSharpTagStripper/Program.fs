@@ -4,18 +4,18 @@
 [<EntryPoint>]
 let main argv = 
     
-    let rec get_next_character (flag, text) =
-        if Seq.isEmpty text then
-           None;
-        else
-            match flag, Seq.head text with
-            | false, '<' -> get_next_character (true, Seq.tail text)
-            | true,  '>' -> get_next_character (false, Seq.tail text)
-            | false,  _  -> Some (Seq.head text, (false, Seq.tail text))
-            | true,   _  -> get_next_character (true,  Seq.tail text)
+    let strip_tags input = 
+        let rec get_next_character (flag, text) = 
+            match flag with
+            | _     when (Seq.isEmpty text) -> None // sequence is empty so end the unfold operation
+            | _     when (Seq.head text = '<') -> get_next_character (false,  Seq.tail text) // we've seen a < so hide from here on
+            | _     when (Seq.head text = '>') -> get_next_character (true,   Seq.tail text) // we've seen a > so unhide from here on
+            | false -> get_next_character (false,  Seq.tail text) // whatever the char is, if we're hiding then keep hiding.
+            | true  -> Some (Seq.head text, (true, Seq.tail text)) // we're unhiding and the char is not a < or > so return it
+        
+        // Start an unfold with the flag indicating we want next char to be unhidden 
+        Seq.unfold get_next_character (true, input) |> System.String.Concat 
 
-    let filtered input = Seq.unfold get_next_character (false, input) |> System.String.Concat
-
-    let result = filtered "This text is HTML with an embedded <img> image tag."
+    let result = strip_tags "This text is HTML with an embedded<img> image tag."
 
     0 // return an integer exit code

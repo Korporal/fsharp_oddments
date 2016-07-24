@@ -10,10 +10,10 @@ let main argv =
         else
             match flag, Seq.head text with
             | false, '<' -> get_next_character (true, Seq.tail text)
-            | false,  _  -> Some (Seq.head text)
             | true,  '>' -> get_next_character (false, Seq.tail text)
+            | false,  _  -> Some (Seq.head text, (false, Seq.tail text))
             | true,   _  -> get_next_character (true,  Seq.tail text)
 
-    let filtered input = Seq.unfold get_next_character (false, input)
+    let filtered input = Seq.unfold get_next_character (false, input) |> System.String.Concat
 
     0 // return an integer exit code

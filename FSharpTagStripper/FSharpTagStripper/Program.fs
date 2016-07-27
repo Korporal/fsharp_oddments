@@ -32,4 +32,15 @@ let main argv =
     
     let tuples = tupelize lines 
 
+    // Drop every n'the element: http://ocaml.org/learn/tutorials/99problems.html
+
+    let rec drop_every n sequence = 
+        let has_at_least j sequence = Seq.truncate j sequence |> Seq.length >= j
+        match has_at_least n sequence with
+        | false -> sequence
+        | true  -> Seq.append (Seq.take (n-1) sequence) (drop_every n (Seq.skip n sequence))
+           
+    let ss = drop_every 3 "123456789" |> Seq.toList   // list just makes viewing results in debug easier.
+            
+
     0 // return an integer exit code

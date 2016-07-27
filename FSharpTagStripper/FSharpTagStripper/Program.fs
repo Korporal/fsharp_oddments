@@ -54,8 +54,8 @@ let main argv =
             match n, list with
             | _, _  when n = 0 -> list
             | _, _  when n % list.Length = 0 -> list
-            | _, _  when n > 0 -> (list |> take_first |> append_to (list |> skip_first)) |> rotate_list (n-1) 
-            | _, _  when n < 0 -> (list |> skip_last  |> append_to (list |> take_last))  |> rotate_list (n+1) 
+            | _, _  when n > 0 -> (list |> take_first |> append_to (list |> skip_first)) |> rotate_list (n - 1) 
+            | _, _  when n < 0 -> (list |> skip_last  |> append_to (list |> take_last))  |> rotate_list (n + 1) 
         rotate_list n list
 
     let rotated = rotate -2 ("abcdefghij" |> Seq.toList)

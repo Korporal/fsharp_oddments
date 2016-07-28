@@ -44,7 +44,7 @@ let main argv =
     
     // Rotate a list n places left or right: http://ocaml.org/learn/tutorials/99problems.html
     
-    let rotate n (list:list<'a>) =  
+    let rotate n (list:seq<'a>) =  
         let rec rotate_list n (list:list<'a>) =
             let take_first (list:list<'a>) = list |> List.take 1
             let skip_first (list:list<'a>) = list |> List.skip 1
@@ -55,9 +55,9 @@ let main argv =
             | _, _  when n % list.Length = 0 -> list
             | _, _  when n > 0 -> (list |> take_first |> append_to (list |> skip_first)) |> rotate_list (n - 1) 
             | _, _  when n < 0 -> (list |> skip_last  |> append_to (list |> take_last))  |> rotate_list (n + 1) 
-        rotate_list n list
+        rotate_list n (Seq.toList list)
 
-    let rotated = rotate -2 ("abcdefghij" |> Seq.toList)
+    let rotated = rotate -2 "abcdefghij" 
 
 
     0 // return an integer exit code

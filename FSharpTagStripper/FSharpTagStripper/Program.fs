@@ -64,14 +64,16 @@ let main argv =
     let tcalculate name =
         name.ToString().ToLower().ToCharArray() |> Seq.map (fun char -> Convert.ToInt32 char - 96) |> Seq.sum
 
-    //let solve_super_digit n k =
-    let rec super_digit_string x = 
-        let sum_digits_string s = s.ToString() |> Seq.fold (fun t char -> Convert.ToInt32 char + t - 48) 0 |> string // the 48 compensates for the fact that the char's numeric value is its ASCII value.
-        match x with
-        | "0" | "1" | "2" | "3" | "4" | "5"| "6"| "7" | "8" | "9" -> x
-        | _ -> sum_digits_string x |> super_digit_string
+    let solve_super_digit n k =
+        let rec super_digit_string x = 
+            let sum_digits_string s = s |> string |> Seq.fold (fun t char -> Convert.ToInt32 char + t - 48) 0 |> string // the 48 compensates for the fact that the char's numeric value is its ASCII value.
+            match x with
+            | "0" | "1" | "2" | "3" | "4" | "5"| "6"| "7" | "8" | "9" -> x
+            | _ -> sum_digits_string x |> super_digit_string
+        String.replicate k (n |> string) |> super_digit_string
         
-    let v = super_digit_string "1234565"
+    
+    let v = solve_super_digit 148 3
 
     let x = Convert.ToInt32 '0'
         

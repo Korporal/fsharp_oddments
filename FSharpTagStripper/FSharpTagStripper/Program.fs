@@ -96,20 +96,39 @@ let main argv =
     //  1 2     5 s0 = 12, s1 = 5
     //  3       5 s0 = 3,  s1 = 5
 
+    let sequentify first second = seq {yield! first; yield! second}
 
-    let rec evaluate first second =
-        let elements first second = seq {yield! first; yield! second} |> Seq.where (fun c -> c <> '0') |> Seq.toList
-        let first_two = elements first second |> List.take 2 //|> List.toList
+    let add (cells:list<'char>) = 
+        match cells.Length with
+        | 1 -> cells
+        | _ -> (((int cells.Head)-48 + (int cells.Tail.Head)-48) |> string).ToCharArray() |> Array.toList
 
-        if first_two.Length = 1 then first_two else
-           let sum = ((int first_two.Head)-48 + (int first_two.Tail.Head)-48) |> string 
-           let back =  (List.skip 2 (elements first second))
-           let front = (sum.ToCharArray() |> Array.toList) |> List.append first
-           evaluate front back
+    let rec pull_and_add first second = 
+        let pulled_value = sequentify first second |> Seq.truncate 2 |> Seq.toList 
+        match pulled_value.Length with
+        | 1 -> pulled_value
+        | _ -> pull_and_add (add pulled_value) (sequentify first second |> Seq.toList |> List.skip 2)
 
-    evaluate sseq nseq
+    let solve sequence =
+        let accumulator = ['0'].Tail // i.e. an empty char list
+        pull_and_add accumulator sequence
 
 
+        
+
+//    let rec evaluate first second =
+//        let elements first second = seq {yield! first; yield! second} |> Seq.where (fun c -> c <> '0') |> Seq.toList
+//        let first_two = elements first second |> List.take 2 //|> List.toList
+//
+//        if first_two.Length = 1 then first_two else
+//           let sum = ((int first_two.Head)-48 + (int first_two.Tail.Head)-48) |> string 
+//           let back =  (List.skip 2 (elements first second))
+//           let front = (sum.ToCharArray() |> Array.toList) |> List.append first
+//           evaluate front back
+
+    //evaluate sseq nseq
+
+    let r = solve ['3';'2';'5';'3']
 
 
     

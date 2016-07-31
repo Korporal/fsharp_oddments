@@ -69,24 +69,24 @@ let main argv =
 //
 //    code
 //
-    let run_super_digit =
-        let read_line = Operators.stdin.ReadToEnd()
-        let args = read_line.Trim().Split ' ' 
-        let solve_super_digit n k =
-            let rec super_digit_string x = 
-                let sum_digits_string s = s |> string |> Seq.fold (fun t char -> Convert.ToInt64 char + t - 48L) 0L |> string // the 48 compensates for the fact that the char's numeric value is its ASCII value.
-                match x with
-                | "0" | "1" | "2" | "3" | "4" | "5"| "6"| "7" | "8" | "9" -> x
-                | _ -> sum_digits_string x |> super_digit_string
-            String.replicate k (n |> string) |> super_digit_string
-        
-        solve_super_digit args.[0] (Convert.ToInt32 args.[1]) |> Console.WriteLine
+//    let run_super_digit =
+//        let read_line = Operators.stdin.ReadToEnd()
+//        let args = read_line.Trim().Split ' ' 
+//        let solve_super_digit n k =
+//            let rec super_digit_string x = 
+//                let sum_digits_string s = s |> string |> Seq.fold (fun t char -> Convert.ToInt64 char + t - 48L) 0L |> string // the 48 compensates for the fact that the char's numeric value is its ASCII value.
+//                match x with
+//                | "0" | "1" | "2" | "3" | "4" | "5"| "6"| "7" | "8" | "9" -> x
+//                | _ -> sum_digits_string x |> super_digit_string
+//            String.replicate k (n |> string) |> super_digit_string
+//        
+//        solve_super_digit args.[0] (Convert.ToInt32 args.[1]) |> Console.WriteLine
+//
+    //run_super_digit
 
-    run_super_digit
 
 
-
-    let nseq = ['1';'4';'7';'5';'9';'8';'7';'4';'5';'9';'7';'5';'9';'3';'4';'6';'5';'4']
+    let nseq = ['1';'4';'7']//;'5';'9';'8';'7';'4';'5';'9';'7';'5';'9';'3';'4';'6';'5';'4']
     let sseq = ['0']
     let k    = 3
 
@@ -96,16 +96,18 @@ let main argv =
     //  1 2     5 s0 = 12, s1 = 5
     //  3       5 s0 = 3,  s1 = 5
 
-    let elements sseq nseq = seq {yield! sseq 
-                                  yield! nseq}
 
-    let rec eval s n =
-        let two = elements s n |> Seq.take 2 |> Seq.toList
-        let sum = ((int two.Head)-48 + (int two.Tail.Head)-48) |> string 
-        
-        eval (sum.ToCharArray() |> Seq.toList) (Seq.skip 2 (elements s n))
+    let rec evaluate first second =
+        let elements first second = seq {yield! first; yield! second} |> Seq.where (fun c -> c <> '0') |> Seq.toList
+        let first_two = elements first second |> List.take 2 //|> List.toList
 
-    eval sseq nseq
+        if first_two.Length = 1 then first_two else
+           let sum = ((int first_two.Head)-48 + (int first_two.Tail.Head)-48) |> string 
+           let back =  (List.skip 2 (elements first second))
+           let front = (sum.ToCharArray() |> Array.toList) |> List.append first
+           evaluate front back
+
+    evaluate sseq nseq
 
 
 

@@ -149,6 +149,6 @@ let main argv =
 //
 //        Operators.stdout.Write(result)
 
-    superdigit_problem.solve_problem()
+    SuperdigitProblem.solve_problem()
 
     0 // return an integer exit code

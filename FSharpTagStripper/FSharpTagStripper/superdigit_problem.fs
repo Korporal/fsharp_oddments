@@ -21,10 +21,11 @@ let concentrate sequence =
 let test = concentrate ['8';'4';'9';'7';'3';'6';'3';'7';'4';]
 
 let solve_problem () =
-
-    let summation = concentrate (IOHelpers.stdin_as_char_seq())
-    let multiplier = IOHelpers.stdin_as_char_seq() |> Seq.toArray |> String |> Convert.ToInt32
-    let total = multiplier * ((int summation)-48)
+    let eofs = [-1;13;32] // end of file, enter-key, space
+    let numeric_for_char_0 = 48
+    let summation =  eofs |> IOHelpers.stdin_as_char_seq |> concentrate 
+    let multiplier = eofs |> IOHelpers.stdin_as_char_seq |> Seq.toArray |> String |> Convert.ToInt32
+    let total = multiplier * ((int summation) - numeric_for_char_0)
     let result = concentrate (total.ToString().ToCharArray())
 
     Operators.stdout.Write(result)

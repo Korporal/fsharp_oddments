@@ -3,9 +3,11 @@ module SuperdigitProblem
 open System
 
 /// <summary>
-/// Consumes an in put sequence of char digits by arithmetically addding each digit to the next digit read from the sequence, if the adddition result has more than 
-/// one digit then those digits are addded yielding a single digit result.
+/// Consumes an in put sequence of char digits by arithmetically addding each digit to the next digit read from the sequence.
 /// </summary>
+/// <remarks>
+/// If the adddition result has more than one digit then those digits are addded yielding a single digit result.
+/// </remarks>
 /// <param name="sequence">A sequence of characters each of which must be a decimal digit.</param>
 let concentrate sequence =
     let compute_digit prev_char next_char =
@@ -28,8 +30,8 @@ let test = concentrate ['8';'4';'9';'7';'3';'6';'3';'7';'4';]
 let solve_problem () =
     let eofs = [-1;13;32] // end of file, enter-key, space
     let numeric_for_char_0 = 48
-    let summation =  eofs |> IOHelpers.inseq |> concentrate 
-    let multiplier = eofs |> IOHelpers.inseq |> Seq.toArray |> String |> Convert.ToInt32
+    let summation =  eofs |> StdIOHelpers.inseq |> concentrate 
+    let multiplier = eofs |> StdIOHelpers.inseq |> Seq.toArray |> String |> Convert.ToInt32
     let total = multiplier * ((int summation) - numeric_for_char_0)
     let result = concentrate (total.ToString().ToCharArray())
 

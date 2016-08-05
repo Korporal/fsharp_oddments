@@ -62,7 +62,6 @@ let main argv =
 
     let rotated = "abcdefghij" |> rotate -2 
 
-
     SuperdigitProblem.solve_problem()
 
     0 // return an integer exit code

@@ -8,6 +8,8 @@
             let skip_last  list = List.rev list |> skip_first |> List.rev
             let append_to lista listb = List.append lista listb
             match n, list with
+            | _, [] -> []
+            | _, [ _ ] -> list
             | _, _  when n = 0 -> list
             | _, _  when n % List.length list = 0 -> list
             | _, _  when n > 0 -> (list |> take_first |> append_to (list |> skip_first)) |> rotate_list (n - 1) 

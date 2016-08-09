@@ -51,6 +51,8 @@
     <None Include="App.config" />
     <Compile Include="StdIOHelpers.fs" />
     <Compile Include="SuperdigitProblem.fs" />
+    <Compile Include="ListHelpers.fs" />
+    <Compile Include="HtmlHelpers.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <PropertyGroup>

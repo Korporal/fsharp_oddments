@@ -35,7 +35,13 @@ module program =
         let ss = drop_every 3 "123456789" |> Seq.toList   // list just makes viewing results in debug easier.
     
         // Rotate a list n places left or right: http://ocaml.org/learn/tutorials/99problems.html
-    
+        
+        let k = (1,2)
+
+        let outer M N list =
+            let fork X list = (List.take X list, List.skip X list)
+            let pair = fork N list
+            (fst pair) @ fst (fork 1 (snd pair))
 
         let rotated = "abcdefghij" |> ListHelpers.rotate -2 
 

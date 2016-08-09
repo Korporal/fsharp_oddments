@@ -49,8 +49,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
-    <Compile Include="stdinout.fs" />
-    <Compile Include="superdigit_problem.fs" />
+    <Compile Include="StdIOHelpers.fs" />
+    <Compile Include="SuperdigitProblem.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <PropertyGroup>

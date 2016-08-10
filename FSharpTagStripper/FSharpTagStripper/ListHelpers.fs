@@ -16,6 +16,8 @@
             | _, _  when n < 0 -> (list |> skip_last  |> append_to (list |> take_last))  |> rotate_list (n + 1) 
         rotate_list n (Seq.toList list)
 
+    let trd (_,_,x) = x
+
     // Consumes a tuple of two lists and returns a tuple where the first list is unchanged but the second list has n items removed.
     let s n data = (fst data, (List.skip n (snd data)))            
 

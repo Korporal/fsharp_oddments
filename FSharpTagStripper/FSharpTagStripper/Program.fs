@@ -41,12 +41,20 @@ module program =
 
         let tst n data = data |> ListHelpers.t 1 |> ListHelpers.s (n-2) |> ListHelpers.t 1
 
+        let rec terms c n data = 
+            match c with
+            | 3 -> tst n data
+            | _ -> tst n data |> terms (c-1) n
 
-        (* M = rows, N = cols *)
-        let outer M N list = 
-            let fork X list = (List.take X list, List.skip X list)
-            let pair = fork N list
-            (fst pair) @ fst (fork 1 (snd pair))
+        let border M N list =
+            let tuple = ([],list)
+            tuple |> ListHelpers.t N |> terms N N |> ListHelpers.t N
+
+        let tbt = ['a';'b';'c';'d';'e';'f';'g';'h';'i']
+        let fbf = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p']
+
+        let otbt = border 3 3 tbt |> fst
+        let ofbf = border 4 4 fbf |> fst
 
         let rotated = "abcdefghij" |> ListHelpers.rotate -2 
 

@@ -46,15 +46,16 @@ module program =
             | 3 -> tst n data
             | _ -> tst n data |> terms (c-1) n
 
-        let border M N list =
-            let tuple = ([],list)
+        let ring M N list =
+            let tuple = ([],list,[])
             tuple |> ListHelpers.t N |> terms N N |> ListHelpers.t N
 
         let tbt = ['a';'b';'c';'d';'e';'f';'g';'h';'i']
         let fbf = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p']
-
-        let otbt = border 3 3 tbt |> fst
-        let ofbf = border 4 4 fbf |> fst
+        let pbp = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p';'q';'r';'s';'t';'u';'v';'w';'x';'y']
+        let otbt = ring 3 3 tbt 
+        let ofbf = ring 4 4 fbf  
+        let opbp = ring 5 5 pbp
 
         let rotated = "abcdefghij" |> ListHelpers.rotate -2 
 

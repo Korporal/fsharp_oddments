@@ -16,12 +16,14 @@
             | _, _  when n < 0 -> (list |> skip_last  |> append_to (list |> take_last))  |> rotate_list (n + 1) 
         rotate_list n (Seq.toList list)
 
-    let trd (_,_,x) = x
+    let first  (x,_,_) = x
+    let second (_,x,_) = x
+    let third  (_,_,x) = x
 
     // Consumes a tuple of two lists and returns a tuple where the first list is unchanged but the second list has n items removed.
-    let s n data = (fst data, (List.skip n (snd data)))            
+    let s n data = (first data, (List.skip n (second data)), (third data @ List.take n (second data)))            
 
     // Consumes a tuple of two lists and returns a tuple where the first list has n items appended from the second list 
     // and the second list has those same items removed.
-    let t n data = (fst data @ (List.take n (snd data)), (snd data)) |> s n
+    let t n data = (first data @ (List.take n (second data)), (second data |> List.skip n), (third data)) 
     

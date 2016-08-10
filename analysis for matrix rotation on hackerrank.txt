@@ -1,0 +1,44 @@
+M = 2
+N = 2
+
+a b
+c d 
+
+1) t(4)
+
+M = 3 rows
+N = 3 cols
+
+a b c 
+d e f     
+g h i 
+
+1) t(3).t(1).s(1).t(1).t(3)                 => t(n). t(1).s(n-2).t(1) .t(n) // 1 tst term
+2) t(1) from remainder
+
+
+M = 4
+N = 4
+
+a b c d
+e f g h 
+i j k l 
+m n o p
+ 
+1) t(4).t(1).s(2).t(1).t(1).s(2).t(1).t(4) => t(n). t(1).s(n-2).t(1) . (t1).s(n-2).t(1) .t(n) // 2 tst terms
+2) t(4) from remainder
+
+M = 5
+N = 5
+
+a b c d e
+f g h i j 
+k l m n o
+p q r s t 
+u v w x y 
+
+1) t(5).t(1).s(3).t(1).t(1).s(3).t(1).t(1).s(3).t(1).t(5) = t(n). t(1).s(n-2).t(1) . t(1).s(n-2).t(1) . t(1).s(n-2).t(1) .t(n) // 3 tst terms
+2) t(3).t(1).s(1).t(1).t(3) from remainder
+3) t(1) from remainder
+
+t(n).t(1).s(n-2).t(1).t(n)

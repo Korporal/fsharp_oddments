@@ -38,7 +38,12 @@ module program =
         
         let k = (1,2)
 
-        let outer M N list =
+
+        let tst n data = data |> ListHelpers.t 1 |> ListHelpers.s (n-2) |> ListHelpers.t 1
+
+
+        (* M = rows, N = cols *)
+        let outer M N list = 
             let fork X list = (List.take X list, List.skip X list)
             let pair = fork N list
             (fst pair) @ fst (fork 1 (snd pair))

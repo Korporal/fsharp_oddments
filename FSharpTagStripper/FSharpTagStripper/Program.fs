@@ -65,15 +65,23 @@ module program =
         let r1 = row 1 mtbt |> Seq.toList
         let c2 = col 2 mtbt |> Seq.toList
 
-        let ring matrix =
+        // returns the specified 'ring' of elements from a matrix in clockwise order.
+        let ring n matrix =
             let rows = ListHelpers.first matrix - 1
             let cols = ListHelpers.second matrix - 1
-            seq {yield! (row 0 matrix |> Seq.take (cols));
-                 yield! (col cols matrix |> Seq.take (cols));
-                 yield! (row rows matrix |> Seq.rev |> Seq.take (cols));
-                 yield! (col 0 matrix |> Seq.rev |> Seq.take (cols))}
+            let coltake = cols - (2 * n)
+            let rowtake = rows - (2 * n)
+            let upper = (row n matrix        |> Seq.skip n |> Seq.take (coltake)) |> Seq.toList
+            let right = (col (cols-n) matrix |> Seq.skip n |> Seq.take (rowtake))  |> Seq.toList
+            let lower = (row (rows-n) matrix |> Seq.rev    |> Seq.skip n |> Seq.take (coltake))  |> Seq.toList
+            let left  = (col n matrix        |> Seq.rev    |> Seq.skip n |> Seq.take (rowtake))  |> Seq.toList
 
-        let otbt = ring mtbt |> Seq.toList
+            seq {yield! upper;
+                 yield! right;
+                 yield! lower;
+                 yield! left}
+
+        let otbt = ring 2 mtbt |> Seq.toList
 //        let ofbf = ring 4 4 fbf  
 //        let opbp = ring 5 5 pbp
 //        let rotbt = ListHelpers.first otbt |> ListHelpers.rotate 1

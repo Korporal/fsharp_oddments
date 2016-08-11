@@ -53,9 +53,30 @@ module program =
         let tbt = ['a';'b';'c';'d';'e';'f';'g';'h';'i']
         let fbf = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p']
         let pbp = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p';'q';'r';'s';'t';'u';'v';'w';'x';'y']
-        let otbt = ring 3 3 tbt 
-        let ofbf = ring 4 4 fbf  
-        let opbp = ring 5 5 pbp
+        
+        let mtbt = (5,5,pbp) (* rows, cols, list*)
+
+        let row M matrix = 
+            (ListHelpers.third matrix) |> Seq.skip (M * (ListHelpers.first matrix)) |> Seq.take (ListHelpers.second matrix)
+
+        let col N matrix = 
+            seq {for r in 0..(-1 + ListHelpers.first matrix) -> row r matrix |> Seq.skip N |> Seq.head}
+        
+        let r1 = row 1 mtbt |> Seq.toList
+        let c2 = col 2 mtbt |> Seq.toList
+
+        let ring matrix =
+            let rows = ListHelpers.first matrix - 1
+            let cols = ListHelpers.second matrix - 1
+            seq {yield! (row 0 matrix |> Seq.take (cols));
+                 yield! (col cols matrix |> Seq.take (cols));
+                 yield! (row rows matrix |> Seq.rev |> Seq.take (cols));
+                 yield! (col 0 matrix |> Seq.rev |> Seq.take (cols))}
+
+        let otbt = ring mtbt |> Seq.toList
+//        let ofbf = ring 4 4 fbf  
+//        let opbp = ring 5 5 pbp
+//        let rotbt = ListHelpers.first otbt |> ListHelpers.rotate 1
 
         let rotated = "abcdefghij" |> ListHelpers.rotate -2 
 

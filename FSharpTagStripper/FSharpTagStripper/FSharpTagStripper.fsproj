@@ -53,6 +53,7 @@
     <Compile Include="SuperdigitProblem.fs" />
     <Compile Include="ListHelpers.fs" />
     <Compile Include="HtmlHelpers.fs" />
+    <Compile Include="RangeMinimumQueryProblem.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <PropertyGroup>

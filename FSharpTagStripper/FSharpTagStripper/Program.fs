@@ -4,6 +4,7 @@
 module program =
 
     open System
+    type Adder = int -> int
 
     [<EntryPoint>]
     let main argv = 
@@ -53,8 +54,9 @@ module program =
         let tbt = ['a';'b';'c';'d';'e';'f';'g';'h';'i']
         let fbf = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p']
         let pbp = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p';'q';'r';'s';'t';'u';'v';'w';'x';'y']
+        let sbs = ['a';'b';'c';'d';'e';'f';'g';'h';'i';'j';'k';'l';'m';'n';'o';'p';'q';'r';'s';'t';'u';'v';'w';'x';'y';'z';'@';'#';'$';'%';'&';'*';'(';')';'+';'-']
         
-        let mtbt = (5,5,pbp) (* rows, cols, list*)
+        let mtbt = (6,6,sbs) (* rows, cols, list*)
 
         let row M matrix = 
             (ListHelpers.third matrix) |> Seq.skip (M * (ListHelpers.first matrix)) |> Seq.take (ListHelpers.second matrix)
@@ -81,13 +83,19 @@ module program =
                  yield! lower;
                  yield! left}
 
-        let otbt = ring 2 mtbt |> Seq.toList
+        let otbt = ring 0 mtbt |> Seq.toList
 //        let ofbf = ring 4 4 fbf  
 //        let opbp = ring 5 5 pbp
 //        let rotbt = ListHelpers.first otbt |> ListHelpers.rotate 1
 
         let rotated = "abcdefghij" |> ListHelpers.rotate -2 
 
-        SuperdigitProblem.solve_problem()
+        RangeMinimumQueryProblem.solve_problem()
+//        let pp = read_integer_pair()
+//
+//        let mm = min (fst pp) (snd pp) ll
+//
+//        let m = min 4 6 [10;20;30;40;11;22;44;15;5]
+//        SuperdigitProblem.solve_problem()
 
         0 // return an integer exit code

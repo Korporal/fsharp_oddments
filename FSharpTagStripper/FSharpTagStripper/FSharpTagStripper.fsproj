@@ -25,6 +25,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\Debug\FSharpTagStripper.XML</DocumentationFile>
     <Prefer32Bit>true</Prefer32Bit>
+    <StartArguments>&lt; range_min_query_test_4.txt &gt; output.txt</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +55,7 @@
     <Compile Include="ListHelpers.fs" />
     <Compile Include="HtmlHelpers.fs" />
     <Compile Include="RangeMinimumQueryProblem.fs" />
+    <Compile Include="SubstringSearchProblem.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <PropertyGroup>

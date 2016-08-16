@@ -29,4 +29,17 @@ let solve_problem() =
     let generate_table (word:string) =
         let L = word.Length - 1
         seq {for I = 0 to L do yield get_partial_match_value word.[0 .. I]} |> Seq.toArray
+
+    let test_word n (word:string) (text:string) (table:int[]) =
+        let skipped = Seq.skip n text
+        let bools = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) |> Seq.toList
+        try
+            let p = Seq.findIndex (fun e -> e = true) bools 
+            n + table.[p]
+        with
+            | :? System.Collections.Generic.KeyNotFoundException -> n + 1
+
+    let is_substring (word:string) (text:string) =
+        let table = generate_table word
+        test_word 0 word text
     0

@@ -6,6 +6,14 @@ module program =
     open System
     type Adder = int -> int
 
+    type Range = {First:int; Last:int}
+
+    type RangeNode =
+         | Range of Range
+         | Value of int
+         | Left  of RangeNode
+         | Rite  of RangeNode
+
     [<EntryPoint>]
     let main argv = 
     

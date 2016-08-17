@@ -31,18 +31,24 @@ let solve_problem() =
         seq {for I = 0 to L do yield get_partial_match_value word.[0 .. I]} |> Seq.toArray
 
     let test_word n (word:string) (text:string) (table:int[]) =
-        let skipped = Seq.skip n text
+        let skipped = Seq.skip n text |> Seq.toList
         let bools   = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) 
         let matches = Seq.takeWhile (id) bools |> Seq.length
         match matches with
         | 0 -> n
+        | _ when word.Length = matches -> -1
         | _ -> n + table.[matches - 1]
+
+    let rec find_match (index:int) (word:string) (text:string) (table:int[]) =
+        match index with
+        | _ when index > text.Length -> false
+        | _ -> let test = test_word index word text table
+               match test with
+               | -1 -> true
+               | _  -> find_match (test + 1) word text table
 
     let is_substring (word:string) (text:string) =
         let table = generate_table word
-        let t = test_word 0 word text table
-        let u = test_word (t+1) word text table
-        let v = test_word (u+1) word text table
-        v
+        find_match 0 word text table
 
-    is_substring "hello" "hello"
+    is_substring "ababaabc" "bacbababaabcbab"

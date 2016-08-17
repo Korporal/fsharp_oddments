@@ -98,12 +98,14 @@ module program =
 
         let rotated = "abcdefghij" |> ListHelpers.rotate -2 
 
-        RangeMinimumQueryProblem.solve_problem()
+//        RangeMinimumQueryProblem.solve_problem()
 //        let pp = read_integer_pair()
 //
 //        let mm = min (fst pp) (snd pp) ll
 //
 //        let m = min 4 6 [10;20;30;40;11;22;44;15;5]
 //        SuperdigitProblem.solve_problem()
+
+        let r = SubstringSearchProblem.solve_problem()
 
         0 // return an integer exit code

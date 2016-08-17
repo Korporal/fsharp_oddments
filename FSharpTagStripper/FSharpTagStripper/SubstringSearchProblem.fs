@@ -5,12 +5,12 @@ open System
 let solve_problem() =
     
     // Returns a sequence of proper suffixes of the input string in descending order by length.
-    let get_suffixes (text:string) =
+    let get_proper_suffixes (text:string) =
         let L = text.Length - 1
         seq {for I = 1 to L do yield text.[I .. L]} 
     
     // Returns a sequence of proper prefixes of the input string in descending order by length.
-    let get_prefixes (text:string) =
+    let get_proper_prefixes (text:string) =
         let L = text.Length - 2
         seq {for I = L downto 0 do yield text.[0 .. I]}
 
@@ -22,8 +22,8 @@ let solve_problem() =
 
     // Given a string, returns the length of the longest pair of suffixes and prefixes which have same length.
     let get_partial_match_value (word:string) =
-        let suffixes = get_suffixes word
-        let prefixes = get_prefixes word
+        let suffixes = get_proper_suffixes word
+        let prefixes = get_proper_prefixes word
         Seq.zip suffixes prefixes |> Seq.filter (fun e -> (fst e) = (snd e)) |> longest_match
 
     let generate_table (word:string) =
@@ -32,14 +32,17 @@ let solve_problem() =
 
     let test_word n (word:string) (text:string) (table:int[]) =
         let skipped = Seq.skip n text
-        let bools = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) |> Seq.toList
-        try
-            let p = Seq.findIndex (fun e -> e = true) bools 
-            n + table.[p]
-        with
-            | :? System.Collections.Generic.KeyNotFoundException -> n + 1
+        let bools   = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) 
+        let matches = Seq.takeWhile (id) bools |> Seq.length
+        match matches with
+        | 0 -> n
+        | _ -> n + table.[matches - 1]
 
     let is_substring (word:string) (text:string) =
         let table = generate_table word
-        test_word 0 word text
-    0
+        let t = test_word 0 word text table
+        let u = test_word (t+1) word text table
+        let v = test_word (u+1) word text table
+        v
+
+    is_substring "hello" "hello"

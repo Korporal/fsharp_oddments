@@ -29,7 +29,7 @@ let solve_problem() =
 
     let rec find_match (index:int) (word:string) (text:string) (table:int[]) =
         let test_word n (word:string) (text:string) (table:int[]) =
-            let skipped = Seq.skip n text |> Seq.toList
+            let skipped = Seq.skip n text 
             let bools   = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) 
             let matches = Seq.takeWhile (id) bools |> Seq.length
             match matches with
@@ -47,4 +47,19 @@ let solve_problem() =
         let table = generate_table word
         find_match 0 word text table
 
-    is_substring "ababaabc" "bacbababaabcbab"
+    let read_int() = Operators.stdin.ReadLine() |> Convert.ToInt32
+    let read_text() = Operators.stdin.ReadLine()
+
+    let get_case() = (read_text(), read_text())
+    let translate b =
+        match b with
+        | true  -> "YES"
+        | false -> "NO"
+
+    let count = read_int()   
+
+    let results = seq {for i = 1 to count do yield get_case()} |> Seq.map (fun pair -> is_substring (snd pair) (fst pair)) 
+
+    Seq.iter (fun b -> Operators.stdout.WriteLine (translate b)) results
+
+//    is_substring "ababaabc" "bacbababaabcbab"

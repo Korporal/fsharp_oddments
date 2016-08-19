@@ -4,6 +4,8 @@
 module program =
 
     open System
+    open System.IO
+
     type Adder = int -> int
 
     type Range = {First:int; Last:int}
@@ -106,6 +108,10 @@ module program =
 //        let m = min 4 6 [10;20;30;40;11;22;44;15;5]
 //        SuperdigitProblem.solve_problem()
 
-        let r = SubstringSearchProblem.solve_problem()
+        let output = new StreamWriter("output_7.txt")
+
+        let r = SubstringSearchProblem.solve_problem (File.OpenText("substringsearch_input_7.txt") :> TextReader)  (output)
+
+        output.Flush()
 
         0 // return an integer exit code

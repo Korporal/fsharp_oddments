@@ -1,8 +1,9 @@
 ﻿module SubstringSearchProblem
 
 open System
+open System.IO
 
-let solve_problem() =
+let solve_problem (input:TextReader) (output:TextWriter) =
     
     // Returns a sequence of proper suffixes of the input string in descending order by length.
 
@@ -47,8 +48,8 @@ let solve_problem() =
         let table = generate_table word
         find_match 0 word text table
 
-    let read_int() = Operators.stdin.ReadLine() |> Convert.ToInt32
-    let read_text() = Operators.stdin.ReadLine()
+    let read_int() = input.ReadLine() |> Convert.ToInt32
+    let read_text() = input.ReadLine()
 
     let get_case() = (read_text(), read_text())
     let translate b =
@@ -60,6 +61,6 @@ let solve_problem() =
 
     let results = seq {for i = 1 to count do yield get_case()} |> Seq.map (fun pair -> is_substring (snd pair) (fst pair)) 
 
-    Seq.iter (fun b -> Operators.stdout.WriteLine (translate b)) results
+    Seq.iter (fun b -> output.WriteLine (translate b)) results
 
 //    is_substring "ababaabc" "bacbababaabcbab"

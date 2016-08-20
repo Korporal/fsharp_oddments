@@ -2,35 +2,45 @@
 
 open System
 open System.IO
+open System.Collections.Generic
 
 let solve_problem (input:TextReader) (output:TextWriter) =
     
     // Returns a sequence of proper suffixes of the input string in descending order by length.
 
     let generate_table (word:string) =
+
         // Given a string, returns the length of the longest pair of suffixes and prefixes which have same length.
         let get_partial_match_value (word:string) =
             let get_proper_suffixes (text:string) =
                 let L = text.Length - 1
                 seq {for I = 1 to L do yield text.[I .. L]} 
+
             // Returns a sequence of proper prefixes of the input string in descending order by length.
             let get_proper_prefixes (text:string) =
                 let L = text.Length - 2
                 seq {for I = L downto 0 do yield text.[0 .. I]}
+
+
             // Given a sequence of matching suffix/prefix pairs, returns the length of the longest.
             let longest_match pairs =
-                match Seq.exists (fun (s,p) -> s = p) pairs with 
-                | false -> 0
-                | true  -> Seq.find (fun (s,p) -> s = p) pairs |> fst |> Seq.length
+                let attempt = Seq.tryFind (fun (s,p) -> s = p) pairs
+                match attempt with
+                | None -> 0
+                | Some(pair) -> fst pair |> Seq.length
+
             let suffixes = get_proper_suffixes word
             let prefixes = get_proper_prefixes word
+
             match (Seq.isEmpty suffixes, Seq.isEmpty prefixes) with
             | (true, true) -> 0
             | (_,_) -> Seq.zip suffixes prefixes |> longest_match
+
         let L = word.Length - 1
         seq {for I = 0 to L do yield get_partial_match_value word.[0 .. I]} |> Seq.toArray
 
     let rec find_match (index:int) (word:string) (text:string) (table:int[]) =
+
         let test_word n (word:string) (text:string) (table:int[]) =
             let skipped = Seq.skip n text 
             let bools   = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) 
@@ -39,6 +49,7 @@ let solve_problem (input:TextReader) (output:TextWriter) =
             | 0 -> n
             | _ when word.Length = matches -> -1
             | _ -> n + table.[matches - 1]
+
         match index with
         | _ when index > text.Length -> false
         | _ -> let test = test_word index word text table

@@ -110,8 +110,12 @@ module program =
 
         let output = new StreamWriter("output_7.txt")
 
+        let clock = System.Diagnostics.Stopwatch.StartNew()
+
         let r = SubstringSearchProblem.solve_problem (File.OpenText("substringsearch_input_7.txt") :> TextReader)  (output)
 
+        clock.Stop()
+        printfn "%O" clock.Elapsed
         output.Flush()
 
         0 // return an integer exit code

@@ -19,12 +19,14 @@ let solve_problem (input:TextReader) (output:TextWriter) =
                 seq {for I = L downto 0 do yield text.[0 .. I]}
             // Given a sequence of matching suffix/prefix pairs, returns the length of the longest.
             let longest_match pairs =
-                match Seq.isEmpty pairs with
-                | true  -> 0
-                | false -> pairs |> Seq.map (fun e -> (String.length (fst e))) |> Seq.max
+                match Seq.exists (fun (s,p) -> s = p) pairs with 
+                | false -> 0
+                | true  -> Seq.find (fun (s,p) -> s = p) pairs |> fst |> Seq.length
             let suffixes = get_proper_suffixes word
             let prefixes = get_proper_prefixes word
-            Seq.zip suffixes prefixes |> Seq.filter (fun e -> (fst e) = (snd e)) |> longest_match
+            match (Seq.isEmpty suffixes, Seq.isEmpty prefixes) with
+            | (true, true) -> 0
+            | (_,_) -> Seq.zip suffixes prefixes |> longest_match
         let L = word.Length - 1
         seq {for I = 0 to L do yield get_partial_match_value word.[0 .. I]} |> Seq.toArray
 
@@ -63,4 +65,4 @@ let solve_problem (input:TextReader) (output:TextWriter) =
 
     Seq.iter (fun b -> output.WriteLine (translate b)) results
 
-//    is_substring "ababaabc" "bacbababaabcbab"
+//    is_substring "abababca" "bacbababaabcbab"

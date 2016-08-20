@@ -6,20 +6,21 @@ open System.Collections.Generic
 
 let solve_problem (input:TextReader) (output:TextWriter) =
     
-    // Returns a sequence of proper suffixes of the input string in descending order by length.
 
     let generate_table (word:string) =
 
         // Given a string, returns the length of the longest pair of suffixes and prefixes which have same length.
         let get_partial_match_value (word:string) =
+
+            // Returns a sequence of proper suffixes of the input string in descending order by length.
             let get_proper_suffixes (text:string) =
-                let L = text.Length - 1
-                seq {for I = 1 to L do yield text.[I .. L]} 
+                let L = word.Length
+                seq {for I = 1 to L-1 do yield Seq.skip I word} 
 
             // Returns a sequence of proper prefixes of the input string in descending order by length.
-            let get_proper_prefixes (text:string) =
-                let L = text.Length - 2
-                seq {for I = L downto 0 do yield text.[0 .. I]}
+            let get_proper_prefixes (word:string) =
+                let L = word.Length
+                seq {for I = L-2 downto 1 do yield Seq.take I word} 
 
 
             // Given a sequence of matching suffix/prefix pairs, returns the length of the longest.
@@ -37,7 +38,7 @@ let solve_problem (input:TextReader) (output:TextWriter) =
             | (_,_) -> Seq.zip suffixes prefixes |> longest_match
 
         let L = word.Length - 1
-        seq {for I = 0 to L do yield get_partial_match_value word.[0 .. I]} |> Seq.toArray
+        seq {for I = L downto 0 do yield Seq.take I word |> get_partial_match_value } |> Seq.toArray |> Array.rev
 
     let rec find_match (index:int) (word:string) (text:string) (table:int[]) =
 
@@ -69,6 +70,7 @@ let solve_problem (input:TextReader) (output:TextWriter) =
         match b with
         | true  -> "YES"
         | false -> "NO"
+
 
     let count = read_int()   
 

@@ -57,6 +57,7 @@
     <Compile Include="HtmlHelpers.fs" />
     <Compile Include="RangeMinimumQueryProblem.fs" />
     <Compile Include="SubstringSearchProblem.fs" />
+    <Compile Include="SearchSubstring2.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <PropertyGroup>

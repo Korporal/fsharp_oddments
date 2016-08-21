@@ -30,8 +30,17 @@ let solve_problem (input:TextReader) (output:TextWriter) =
     let rec find_match (index:int) (word:string) (text:string) (table:int[]) =
 
         let test_word n (word:string) (text:string) (table:int[]) =
-            let skipped = Seq.skip n text 
-            let bools   = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) 
+//            let skipped = Seq.skip n text 
+//            let bools   = Seq.zip word skipped |> Seq.map (fun p -> (fst p) = (snd p)) 
+
+            let wordlen = word.Length
+            let searchtext = Seq.skip n text |> Seq.truncate wordlen 
+
+            if Seq.length searchtext < wordlen then false
+            
+            Seq.compareWith (fun a b -> if a = b then 0 else 1) word searchtext 
+
+
             let matches = Seq.takeWhile (id) bools |> Seq.length
             match matches with
             | 0 -> n

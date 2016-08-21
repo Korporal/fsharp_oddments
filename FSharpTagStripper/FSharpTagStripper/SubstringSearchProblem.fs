@@ -6,40 +6,27 @@ open System.Collections.Generic
 
 let solve_problem (input:TextReader) (output:TextWriter) =
     
-
-    let generate_table (word:string) =
-
-        // Given a string, returns the length of the longest pair of suffixes and prefixes which have same length.
-        let get_partial_match_value (word:string) =
-
-            // Returns a sequence of proper suffixes of the input string in descending order by length.
-            let get_proper_suffixes (text:string) =
-                let L = word.Length
-                seq {for I = 1 to L-1 do yield Seq.skip I word} 
-
-            // Returns a sequence of proper prefixes of the input string in descending order by length.
-            let get_proper_prefixes (word:string) =
-                let L = word.Length
-                seq {for I = L-2 downto 1 do yield Seq.take I word} 
-
-
-            // Given a sequence of matching suffix/prefix pairs, returns the length of the longest.
-            let longest_match pairs =
-                let attempt = Seq.tryFind (fun (s,p) -> s = p) pairs
-                match attempt with
-                | None -> 0
-                | Some(pair) -> fst pair |> Seq.length
-
-            let suffixes = get_proper_suffixes word
-            let prefixes = get_proper_prefixes word
-
-            match (Seq.isEmpty suffixes, Seq.isEmpty prefixes) with
-            | (true, true) -> 0
-            | (_,_) -> Seq.zip suffixes prefixes |> longest_match
-
-        let L = word.Length - 1
-        seq {for I = L downto 0 do yield Seq.take I word |> get_partial_match_value } |> Seq.toArray |> Array.rev
-
+    let compute_table (word:string) =
+        let prev_longest = 0
+        let index = 1
+        let table = Array.create word.Length 0
+    
+        let rec inner_computation index prev (table:int[]) =
+            if index >= word.Length then
+               table
+            else
+                if word.[index] = word.[prev] then
+                   table.[index] <- prev+1
+                   inner_computation (index+1) (prev+1) table
+                else
+                    if prev = 0 then
+                       table.[index] <- 0
+                       inner_computation (index+1) prev table
+                    else
+                       inner_computation index table.[prev-1] table
+    
+        inner_computation index prev_longest table
+    
     let rec find_match (index:int) (word:string) (text:string) (table:int[]) =
 
         let test_word n (word:string) (text:string) (table:int[]) =
@@ -59,7 +46,7 @@ let solve_problem (input:TextReader) (output:TextWriter) =
                | _  -> find_match (test + 1) word text table
 
     let is_substring (word:string) (text:string) =
-        let table = generate_table word
+        let table = compute_table word
         find_match 0 word text table
 
     let read_int() = input.ReadLine() |> Convert.ToInt32
